@@ -35,7 +35,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 
-import edu.illinois.cs.cs125.spring2019.mp3.lib.RecognizePhoto;
+import hoes.mad.application.AnalyzeText;
 
 /**
  * main activity.
