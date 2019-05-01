@@ -130,3 +130,8 @@ public final class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activityResults.class);
         startActivity(intent);
     }
+    public void getMad() {
+        String response = AnalyzeText.getTheSentiment(documents);
+        String mad = AnalyzeText.getSentiment(response);
+    }
+}
