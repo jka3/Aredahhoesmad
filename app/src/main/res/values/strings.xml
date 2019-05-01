@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Aredahhoesmad</string>
+    <string name="title_activity_results_page">ResultsPage</string>
 </resources>
