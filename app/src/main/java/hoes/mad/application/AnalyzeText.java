@@ -1,5 +1,8 @@
 package hoes.mad.application;
 
+import android.net.Uri;
+import android.os.AsyncTask;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -29,6 +32,7 @@ class Documents {
     }
 }
 
+
 public class AnalyzeText {
 
 // ***********************************************
@@ -36,7 +40,7 @@ public class AnalyzeText {
 // **********************************************
 
     // Replace the accessKey string value with your valid access key.
-    static String accessKey = "987d20104dc140fda219060417eb6326";
+    static String accessKey = "1a5b5eb42cc6432db09adbc05cd6ae2b";
 
 // Replace or verify the region.
 
@@ -46,36 +50,68 @@ public class AnalyzeText {
 
     // NOTE: Free trial access keys are generated in the westcentralus region, so if you are using
 // a free trial access key, you should not need to change this region.
-    static String host = "https://westus.api.cognitive.microsoft.com";
+    static String host = "https://westcentralus.api.cognitive.microsoft.com";
 
     static String path = "/text/analytics/v2.1/sentiment";
 
-    public static String getTheSentiment(Documents documents) throws Exception {
-        String text = new Gson().toJson(documents);
-        byte[] encoded_text = text.getBytes("UTF-8");
+    public static String getTheSentiment(Documents documents) throws Exception  {
+        try {
+            String text = new Gson().toJson(documents);
+            byte[] encoded_text = text.getBytes("UTF-8");
 
-        URL url = new URL(host + path);
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "text/json");
-        connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
-        connection.setDoOutput(true);
+            URL url = new URL(host + path);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "text/json");
+            connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
+            connection.setDoOutput(true);
 
-        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-        wr.write(encoded_text, 0, encoded_text.length);
-        wr.flush();
-        wr.close();
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.write(encoded_text, 0, encoded_text.length);
+            wr.flush();
+            wr.close();
 
-        StringBuilder response = new StringBuilder();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
-        String line;
-        while ((line = in.readLine()) != null) {
-            response.append(line);
+
+
+            StringBuilder response = new StringBuilder();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+            in.close();
+
+            return response.toString();
+        } catch (FileNotFoundException e) {
+                System.out.println("a");
+
+                String text = new Gson().toJson(documents);
+                byte[] encoded_text = text.getBytes("UTF-8");
+
+                URL url = new URL("https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.1/sentiment[?showStats]");
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "text/json");
+                connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
+                connection.setDoOutput(true);
+
+                DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+                wr.write(encoded_text, 0, encoded_text.length);
+                wr.flush();
+                wr.close();
+
+                StringBuilder response = new StringBuilder();
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    response.append(line);
+                }
+                in.close();
+
+                return response.toString();
         }
-        in.close();
-
-        return response.toString();
     }
 
     public static String getSentiment(final java.lang.String json) {

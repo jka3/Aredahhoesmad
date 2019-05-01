@@ -16,8 +16,9 @@ public class ResultsPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results_page);
-        textView = findViewById(R.id.resultsinfo);
         configureBack();
+        textView = findViewById(R.id.resultsinfo);
+        textView.setText(MainActivity.getMad());
     }
     private void configureBack() {
         backToMain =  findViewById(R.id.backToMain);
