@@ -35,17 +35,11 @@ class Documents {
 
 public class AnalyzeText {
 
-// ***********************************************
-// *** Update or verify the following values. ***
-// **********************************************
-
-    // Replace the accessKey string value with your valid access key.
+    //access key to us API
     static String accessKey = "1a5b5eb42cc6432db09adbc05cd6ae2b";
 
-// Replace or verify the region.
+// Replace or verify  region.
 
-// You must use the same region in your REST API call as you used to obtain your access keys.
-// For example, if you obtained your access keys from the westus region, replace
 // "westcentralus" in the URI below with "westus".
 
     // NOTE: Free trial access keys are generated in the westcentralus region, so if you are using
@@ -58,7 +52,7 @@ public class AnalyzeText {
         try {
             String text = new Gson().toJson(documents);
             byte[] encoded_text = text.getBytes("UTF-8");
-
+            //Builds url to send to server
             URL url = new URL(host + path);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -83,7 +77,7 @@ public class AnalyzeText {
             in.close();
 
             return response.toString();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) { //can not find file of server for some reason :/ prevent app from crashing
                 System.out.println("a");
 
                 String text = new Gson().toJson(documents);
@@ -122,13 +116,13 @@ public class AnalyzeText {
             JsonArray sentiment = result.getAsJsonArray("documents");
             madValue = sentiment.get(0).getAsJsonObject().get("sentiment").getAsInt();
             if (madValue <= 0.25) {
-                return "HOES MAD";
+                return "They are MAD";
             } else if (madValue <= 0.50) {
-                return "Hoes Moderately mad";
+                return "They are Moderately mad";
             } else if (madValue <= 0.75) {
-                return "Hoes not very mad but be careful";
+                return "They are not very mad but be careful";
             } else {
-                return "Hoes not mad";
+                return "They are not mad";
             }
         }
         return "oops";
